@@ -30,38 +30,31 @@ geometric.mean <- function(x,na.rm=TRUE){
 #' @param filterNum Minimun number of counts for each sample
 #' @return A dataframe with the classification of each sample as Clear or Caution followin the original calculation by draculR
 #' @export
-draculR_parse_counts <- function(counts_df, drop_miRs=c(''), verbose=FALSE, filterNum = 1) {
+draculR_parse_counts <- function(counts_df, drop_miRs=c(''), verbose=FALSE, filterNum = 1, 
+                                 listOfMiRs = c('')) {
   
   library(plyr)
   library(edgeR)
   library(magrittr)
   library(dplyr)
   
+  listOfMiRs = unique(c(listOfMiRs, 
+                        "hsa-miR-106b-3p", "hsa-miR-140-3p", "hsa-miR-142-5p",
+                        "hsa-miR-532-5p",  "hsa-miR-17-5p",  "hsa-miR-19b-3p",
+                        "hsa-miR-30c-5p",  "hsa-miR-324-5p", "hsa-miR-192-5p",
+                        "hsa-miR-660-5p",  "hsa-miR-186-5p", "hsa-miR-425-5p",
+                        "hsa-miR-25-3p",   "hsa-miR-363-3p", "hsa-miR-183-5p",
+                        "hsa-miR-451a",    "hsa-miR-182-5p", "hsa-miR-191-5p",
+                        "hsa-miR-194-5p",  "hsa-miR-20b-5p"))
+  
   # global objects for imported data calculations
   classifier_miRs <- data.frame(
-    SYMBOL = c(
-      "hsa-miR-106b-3p",
-      "hsa-miR-140-3p",
-      "hsa-miR-142-5p",
-      "hsa-miR-532-5p",
-      "hsa-miR-17-5p",
-      "hsa-miR-19b-3p",
-      "hsa-miR-30c-5p",
-      "hsa-miR-324-5p",
-      "hsa-miR-192-5p",
-      "hsa-miR-660-5p",
-      "hsa-miR-186-5p",
-      "hsa-miR-425-5p",
-      "hsa-miR-25-3p",
-      "hsa-miR-363-3p",
-      "hsa-miR-183-5p",
-      "hsa-miR-451a",
-      "hsa-miR-182-5p",
-      "hsa-miR-191-5p",
-      "hsa-miR-194-5p",
-      "hsa-miR-20b-5p"
-    )
+    SYMBOL = listOfMiRs
   )
+  
+  print(head(classifier_miRs))
+  print(dim(classifier_miRs))
+  
   
   # negate %in%
   `%notin%` <- Negate(`%in%`)
